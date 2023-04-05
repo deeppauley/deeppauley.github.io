@@ -1,7 +1,72 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<title>Dark Theme Website</title>
+	<style>
+		body {
+			background-color: #222;
+			color: #fff;
+			font-family: Arial, sans-serif;
+			text-align: center;
+			padding-top: 50px;
+		}
+		input[type=text] {
+			width: 50%;
+			padding: 12px 20px;
+			margin: 8px 0;
+			box-sizing: border-box;
+			border: 2px solid #ccc;
+			border-radius: 4px;
+			background-color: #f8f8f8;
+			color: #222;
+		}
+		input[type=submit] {
+			background-color: #4CAF50;
+			color: white;
+			padding: 14px 20px;
+			margin: 8px 0;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		input[type=submit]:hover {
+			background-color: #45a049;
+		}
+	</style>
+</head>
 <body>
-<h1>Hello World</h1>
-<p>Testing.</p>
+	<h1>Dark Theme Website</h1>
+	<form id="myForm">
+		<label for="input_text">Input Text:</label>
+		<br>
+		<input type="text" id="input_text" name="input_text">
+		<br><br>
+		<input type="submit" value="Submit">
+	</form>
+	<br><br>
+	<p id="response"></p>
+
+	<script>
+		document.getElementById("myForm").addEventListener("submit", function(event) {
+			event.preventDefault();
+			sendRequest();
+		});
+
+		function sendRequest() {
+			var inputText = document.getElementById("input_text").value;
+			var xhr = new XMLHttpRequest();
+			var url = "http://173.48.179.80:5000/predict";
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader("Content-Type", "application/json");
+			xhr.onreadystatechange = function () {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					var response = JSON.parse(xhr.responseText);
+					document.getElementById("response").innerHTML = response.text;
+				}
+			};
+			var data = JSON.stringify({"text": inputText});
+			xhr.send(data);
+		}
+	</script>
 </body>
 </html>
